@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết phân tích URL</title>
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #e6edf3;
+            font-family: "Segoe UI", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #161b22;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #30363d;
+        }
+
+        header h1 {
+            color: #58a6ff;
+            font-size: 22px;
+            margin: 0;
+        }
+
+        nav a {
+            color: #58a6ff;
+            text-decoration: none;
+            margin-left: 15px;
+            border: 1px solid #58a6ff;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            background-color: #58a6ff;
+            color: #0d1117;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 900px;
+            margin: 40px auto;
+            background-color: #161b22;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 0 10px rgba(88,166,255,0.1);
+        }
+
+        h2 {
+            color: #58a6ff;
+            margin-top: 0;
+        }
+
+        .result-box {
+            background-color: #238636;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .unsafe {
+            background-color: #da3633;
+        }
+
+        .warning {
+            background-color: #d29922;
+            color: #000;
+        }
+
+        .url {
+            background-color: #0d1117;
+            padding: 10px;
+            border: 1px solid #30363d;
+            border-radius: 5px;
+            margin: 10px 0;
+            color: #c9d1d9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #0d1117;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            border: 1px solid #30363d;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #21262d;
+            color: #58a6ff;
+        }
+
+        .yes { color: #3fb950; font-weight: bold; }
+        .no { color: #f85149; font-weight: bold; }
+        .neutral { color: #d29922; font-weight: bold; }
+
+        .back {
+            margin-top: 20px;
+            display: inline-block;
+            color: #58a6ff;
+            text-decoration: none;
+        }
+
+        .back:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><a href="/">URL Scanner</a></h1>
+        <nav>
+            <a href="/">Trang chủ</a>
+            <a href="/history">Lịch sử</a>
+            
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>🔗 Chi tiết phân tích URL</h2>
+
+        {% if confidence >= 80 %}
+            <div class="result-box">✅ URL được phát hiện là <b>AN TOÀN</b></div>
+        {% elif confidence >= 50 %}
+            <div class="result-box warning">⚠️ URL có thể <b>NGHI NGỜ</b></div>
+        {% else %}
+            <div class="result-box unsafe">❌ URL được phát hiện là <b>KHÔNG AN TOÀN</b></div>
+        {% endif %}
+
+        <p><b>Mô hình sử dụng:</b> RandomForest-ML</p>
+        <p><b>Độ tin cậy:</b> {{ confidence }}%</p>
+       
+
+        <div class="url">{{ url }}</div>
+
+       <h3>Các đặc trưng URL</h3>
+<table>
+    <tr>
+        <th>Đặc điểm</th>
+        <th>Giá trị</th>
+        <th>Đặc điểm</th>
+        <th>Giá trị</th>
+    </tr>
+
+    {% set keys = features.keys()|list %}
+    {% for i in range(0, keys|length, 2) %}
+    <tr>
+        {% set key1 = keys[i] %}
+        {% set val1 = features[key1] %}
+        {% set key2 = keys[i + 1] if i + 1 < keys|length else None %}
+        {% set val2 = features[key2] if key2 else None %}
+
+        <td>{{ key1 }}</td>
+        <td>
+            {% if val1 == 1 %}
+                <span class="yes">✔ Có</span>
+            {% elif val1 == -1 %}
+                <span class="no">✖ Không</span>
+            {% else %}
+                <span class="neutral">⚪ Không xác định</span>
+            {% endif %}
+        </td>
+
+        {% if key2 %}
+            <td>{{ key2 }}</td>
+            <td>
+                {% if val2 == 1 %}
+                    <span class="yes">✔ Có</span>
+                {% elif val2 == -1 %}
+                    <span class="no">✖ Không</span>
+                {% else %}
+                    <span class="neutral">⚪ Không xác định</span>
+                {% endif %}
+            </td>
+        {% else %}
+            <td colspan="2"></td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>
+
+
+        <a href="/history" class="back">⬅️ Quay lại trang kiểm tra</a>
+    </div>
+</body>
+</html>

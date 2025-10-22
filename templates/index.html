@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>URL Scanner</title>
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #e6edf3;
+            font-family: "Segoe UI", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header */
+        header {
+            background-color: #161b22;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #30363d;
+        }
+
+        header h1 {
+            color: #58a6ff;
+            font-size: 22px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        header h1::before {
+            content: "🛡️";
+        }
+
+        nav a {
+            color: #58a6ff;
+            text-decoration: none;
+            margin-left: 15px;
+            border: 1px solid #58a6ff;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #58a6ff;
+            color: #0d1117;
+        }
+
+        /* Card chính giữa */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 80px);
+        }
+
+        .card {
+            background-color: #161b22;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(88,166,255,0.1);
+            padding: 25px 35px;
+            width: 600px;
+            text-align: center;
+        }
+
+        .card h2 {
+            color: #58a6ff;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: #c9d1d9;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            text-align: left;
+            margin-bottom: 8px;
+            color: #58a6ff;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            background-color: #0d1117;
+            color: #e6edf3;
+            resize: none;
+            margin-bottom: 20px;
+            font-family: monospace;
+        }
+
+        button {
+            background-color: #2b4c7e;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #58a6ff;
+            color: #0d1117;
+        }
+
+        footer {
+            text-align: center;
+            color: #555;
+            font-size: 13px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><a href="/">URL Scanner</a></h1>
+        <nav>
+            <a href="/">Trang chủ</a>
+            <a href="/history">Lịch sử</a>
+           
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h2>🔍 Hệ thống Phát hiện URL Độc hại</h2>
+            <p>
+                Hệ thống này sử dụng các thuật toán học máy (Machine Learning) để phát hiện URL độc hại dựa trên đặc điểm của URL, 
+                thông tin WHOIS và cấu trúc web. Dán một hoặc nhiều URL vào khung dưới đây để kiểm tra độ an toàn.
+            </p>
+
+            <form method="POST">
+                <label for="url">🔗 Nhập URL để kiểm tra</label>
+                <textarea id="url" name="url" placeholder="Nhập mỗi URL trên một dòng... (ví dụ: https://example.com)" required></textarea>
+                <button type="submit">💙 Kiểm tra độ an toàn</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>© 2025 URL Scanner - Machine Learning Security Project</footer>
+</body>
+</html>

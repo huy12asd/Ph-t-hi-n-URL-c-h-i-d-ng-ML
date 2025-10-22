@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Lịch sử kiểm tra URL</title>
+<style>
+    body {
+        background-color: #0d1117;
+        color: #e6edf3;
+        font-family: "Segoe UI", Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    header {
+        background-color: #161b22;
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #30363d;
+    }
+
+    header h1 {
+        color: #58a6ff;
+        font-size: 22px;
+        margin: 0;
+    }
+
+    nav a {
+        color: #58a6ff;
+        text-decoration: none;
+        margin-left: 15px;
+        border: 1px solid #58a6ff;
+        padding: 5px 10px;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: 0.2s;
+    }
+
+    nav a:hover {
+        background-color: #58a6ff;
+        color: #0d1117;
+    }
+
+    .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 50px auto;
+        background-color: #161b22;
+        border-radius: 12px;
+        padding: 40px;
+        box-shadow: 0 0 15px rgba(88, 166, 255, 0.15);
+    }
+
+    h2 {
+        color: #58a6ff;
+        margin-top: 0;
+        font-size: 24px;
+    }
+
+    .result-box {
+        background-color: #238636;
+        padding: 18px 20px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        color: #fff;
+        font-size: 18px;
+    }
+
+    .unsafe {
+        background-color: #da3633;
+    }
+
+    .warning {
+        background-color: #d29922;
+        color: #000;
+    }
+
+    .url {
+        background-color: #0d1117;
+        padding: 12px 15px;
+        border: 1px solid #30363d;
+        border-radius: 8px;
+        margin: 20px 0;
+        color: #c9d1d9;
+        word-wrap: break-word;
+        font-size: 16px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 25px;
+        background-color: #0d1117;
+        border-radius: 10px;
+        overflow: hidden;
+        table-layout: fixed;
+    }
+
+    th, td {
+        border: 1px solid #30363d;
+        padding: 12px 10px;
+        text-align: center;
+        font-size: 15px;
+        word-wrap: break-word;
+    }
+
+    th {
+        background-color: #21262d;
+        color: #58a6ff;
+    }
+
+    .yes { color: #3fb950; font-weight: bold; }
+    .no { color: #f85149; font-weight: bold; }
+    .neutral { color: #d29922; font-weight: bold; }
+
+    .back {
+        margin-top: 25px;
+        display: inline-block;
+        color: #58a6ff;
+        text-decoration: none;
+        font-size: 15px;
+    }
+
+    .back:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            width: 95%;
+            padding: 20px;
+        }
+        table, th, td {
+            font-size: 13px;
+        }
+    }
+</style>
+
+</head>
+<body>
+  <header>
+    <h1><a href="/">URL Scanner</a></h1>
+    <nav>
+      <a href="/">Trang chủ</a>
+      <a href="/history">Lịch sử</a>
+   
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>Lịch sử kiểm tra URL</h1>
+    <table>
+    <tr>
+        <th>ID</th>
+        <th>URL</th>
+        <th>Mô hình</th>
+        <th>Kết quả</th>
+        <th>Độ tin cậy</th>
+        <th>Thời gian</th>
+        <th>Chi tiết</th>
+    </tr>
+
+    {% for item in items %}
+    <tr>
+        <td>{{ item.id }}</td>
+        <td>{{ item.url }}</td>
+        <td>{{ item.model_used }}</td>
+        <td>
+            {% if item.prediction == 1 %}
+                <span style="color:#3fb950;">✔ An toàn</span>
+            {% else %}
+                <span style="color:#f85149;">⚠ Không an toàn</span>
+            {% endif %}
+        </td>
+        <td>{{ (item.confidence * 100)|round(2) if item.confidence else "N/A" }}%</td>
+        <td>{{ item.created_at.strftime('%H:%M:%S %d/%m/%Y') }}</td>
+        <td>
+            <a href="/detail/{{ item.id }}" class="detail-btn">🔍 Chi tiết</a>
+        </td>
+    </tr>
+    {% endfor %}
+    </table>
+
+
+    <!-- Phân trang -->
+    <div class="pagination">
+      {% if pagination.has_prev %}
+        <a href="{{ url_for('history', page=pagination.prev_num) }}">⬅️ Trang trước</a>
+      {% else %}
+        <span>⬅️ Trang trước</span>
+      {% endif %}
+
+      <span>Trang {{ pagination.page }} / {{ pagination.pages }}</span>
+
+      {% if pagination.has_next %}
+        <a href="{{ url_for('history', page=pagination.next_num) }}">Trang sau ➡️</a>
+      {% else %}
+        <span>Trang sau ➡️</span>
+      {% endif %}
+    </div>
+
+   
+  </div>
+</body>
+</html>
